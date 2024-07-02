@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title> JS Basic Assignment </title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link
+         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+         rel="stylesheet">
+      <link href="./css/style.css" rel="stylesheet" type="text/css">
+   </head>
+   <body>
+      <div class="form-main-wrapper">
+         <form action="/submit_form" method="post" id="regForm">
+            <div class="first-row">
+               <input type="text" id="firstname" name="firstname" placeholder="First name" required class="mr15">
+               <input type="text" id="lastname" name="lastname" placeholder="Last name" required>
+            </div>
+            <input type="email" id="email" name="email" placeholder="Email" onblur="validateEmail(this.value);"
+               required>
+            <span class="" id="errorText"></span>
+            <input type="date" id="dob" name="dob">
+            <select name="gender">
+               <option value="gender">Gender</option>
+               <option value="male">Male</option>
+               <option value="female">Female</option>
+               <option value="other">Other</option>
+            </select>
+            <select id="country" name="country">
+               <option value="country">country</option>
+               <option value="usa">United States</option>
+               <option value="canada">Canada</option>
+               <option value="uk">United Kingdom</option>
+               <option value="australia">Australia</option>
+            </select>
+            <input type="tel" id="phone" name="phone" placeholder="phone" required>
+            <textarea id="address" name="address" rows="4" cols="50" maxlength="250" placeholder="Address"
+               required></textarea>
+            <span id="addressCount" class="char-count">250 characters remaining</span>
+            <div class="password-wrapper">
+               <input type="password" id="password" name="password" placeholder="password" required>
+               <i class="fa fa-eye" aria-hidden="true" id="visible" onclick="passwordCheck()"></i>
+            </div>
+            <div class="password-wrapper">
+               <input type="password" id="cpassword" name="confirm_password" placeholder="confirm_password" required>
+               <i class="fa fa-eye" aria-hidden="true" id="cvisible" onclick="cpasswordCheck()"></i>
+            </div>
+            <p class="inst-label"> Password should contain :</p>
+            <ul>
+               <li id="minLength" class="invalid"> <span></span> Minimum 8 characters </li>
+               <li id="capitalLetter" class="invalid" > <span></span> Minimum 1 capital letter </li>
+               <li id="number" class="invalid"> <span></span> Minimum 1 numeric character </li>
+               <li id="specialChar" class="invalid"> <span></span> Minimum 1 special character </li>
+            </ul>
+            <input type="submit" value="Submit" class="submit-bnt">
+         </form>
+      </div>
+      <script>
+         const validateEmail = (sEmail) => {
+             let reEmail = /^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/;
+             let errorELement = document.getElementById('errorText');
+             if (!sEmail.match(reEmail)) {
+                 errorELement.innerText = "Email is invalid";
+                 errorELement.style.color = "red";
+                 return false;
+             }
+             return true;
+             errorELement.innerText = "";
+         }
+         let addressField = document.getElementById('address');
+         let addressCount = document.getElementById('addressCount');
+         let maxChars = addressField.getAttribute('maxlength');
+         
+         addressField.addEventListener('input', () => {
+             let remaining = maxChars - addressField.value.length;
+             addressCount.textContent = remaining + ' characters remaining';
+         });
+         
+         const passwordCheck = () => {
+             let x = document.getElementById("password");
+             let visible = document.getElementById('visible');
+             if (x.type === "password") {
+                 x.type = "text";
+                 visible.classList.add('fa-eye-slash');
+                 visible.classList.remove('fa-eye');
+             } else {
+                 x.type = "password";
+                 visible.classList.remove('fa-eye-slash');
+                 visible.classList.add('fa-eye');
+             }
+         }
+         
+         const cpasswordCheck = () => {
+             let x = document.getElementById("cpassword");
+             let visible = document.getElementById('cvisible');
+             if (x.type === "password") {
+                 x.type = "text";
+                 visible.classList.add('fa-eye-slash');
+                 visible.classList.remove('fa-eye');
+             } else {
+                 x.type = "password";
+                 visible.classList.remove('fa-eye-slash');
+                 visible.classList.add('fa-eye');
+             }
+         }
+         
+         document.getElementById('password').addEventListener('input', function() {
+                 const password = this.value;
+                 
+                 const minLength = password.length >= 8;
+                 document.getElementById('minLength').className = minLength ? 'valid' : 'invalid';
+                 
+                 const capitalLetter = /[A-Z]/.test(password);
+                 document.getElementById('capitalLetter').className = capitalLetter ? 'valid' : 'invalid';
+                 
+                 const number = /\d/.test(password);
+                 document.getElementById('number').className = number ? 'valid' : 'invalid';
+                 
+                 const specialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+                 document.getElementById('specialChar').className = specialChar ? 'valid' : 'invalid';
+         });
+      </script>
+   </body>
+</html>
